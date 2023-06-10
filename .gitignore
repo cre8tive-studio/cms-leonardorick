@@ -31,3 +31,7 @@
 
 # env
 .env
+
+# generated files  (since they're generated, don't need to be versionated)
+generated*.ts
+

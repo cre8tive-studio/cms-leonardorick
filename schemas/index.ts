@@ -4,3 +4,6 @@ import post from './post'
 import author from './author'
 
 export const schemaTypes = [post, author, category, blockContent]
+
+// important for type generation to work properly
+export default schemaTypes
