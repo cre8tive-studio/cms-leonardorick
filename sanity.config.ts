@@ -5,10 +5,10 @@ import {schemaTypes} from './schemas'
 
 export default defineConfig({
   name: 'default',
-  title: 'cms-leonardorick',
+  title: 'leonardorick',
 
-  projectId: 'm2agk2o9',
-  dataset: 'production',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID || '',
+  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
   plugins: [deskTool(), visionTool()],
 
