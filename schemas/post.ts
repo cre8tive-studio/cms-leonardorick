@@ -20,10 +20,10 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'author',
-      title: 'Author',
+      name: 'person',
+      title: 'Person',
       type: 'reference',
-      to: {type: 'author'},
+      to: {type: 'person'},
     }),
     defineField({
       name: 'mainImage',
@@ -49,17 +49,24 @@ export default defineType({
       title: 'Body',
       type: 'blockContent',
     }),
+
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
   ],
 
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
+      person: 'person.name',
       media: 'mainImage',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const {person} = selection
+      return {...selection, subtitle: person && `by ${person}`}
     },
   },
 })

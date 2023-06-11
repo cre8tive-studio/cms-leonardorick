@@ -1,9 +1,21 @@
-import {defineConfig} from 'sanity'
+import {PluginOptions, defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
 import {RobotIcon, RocketIcon} from '@sanity/icons'
 import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './schemas'
+import {schemaTypes, translatedSchemaTypes} from './schemas'
+import {documentInternationalization} from '@sanity/document-internationalization'
 
+const plugins: PluginOptions[] = [
+  deskTool(),
+  visionTool(),
+  documentInternationalization({
+    supportedLanguages: [
+      {id: 'en', title: 'English'},
+      {id: 'pt-br', title: 'Português'},
+    ],
+    schemaTypes: translatedSchemaTypes,
+  }),
+]
 export default defineConfig([
   {
     name: 'production-workspace',
@@ -12,7 +24,7 @@ export default defineConfig([
     dataset: 'production',
     basePath: '/production',
     icon: RocketIcon,
-    plugins: [deskTool(), visionTool()],
+    plugins,
     schema: {
       types: schemaTypes,
     },
@@ -24,7 +36,7 @@ export default defineConfig([
     dataset: 'development',
     basePath: '/development',
     icon: RobotIcon,
-    plugins: [deskTool(), visionTool()],
+    plugins,
     schema: {
       types: schemaTypes,
     },
