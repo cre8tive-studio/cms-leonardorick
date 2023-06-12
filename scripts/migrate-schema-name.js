@@ -5,7 +5,6 @@ const parseArgs = require('./parse-args')
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID
 const token = process.env.SANITY_STUDIO_ADMIN_SCRIPTS_TOKEN
 const {oldType, newType, dataset} = parseArgs()
-
 const apiVersion = '2023-06-11'
 
 const client = createClient({
@@ -93,18 +92,33 @@ const migrateNextBatch = async () => {
   return migrateNextBatch()
 }
 
-;(async () => {
-  // todo fecth schema names  and compare with oldType and newType. If they don't exist, thorow error
+const inputIsValid = async () => {
+  const types = await client.fetch('array::unique(*._type)')
   if (!OLD_TYPE || !NEW_TYPE || !dataset) {
     // finish node application
     console.log('Please provide oldType and newType and dataset.')
     console.log(
-      'example execution: node migrate-schema-name.js --oldType post --newType article --dataset=production'
+      'example execution: node migrate-schema-name.js -- --oldType post --newType article --dataset=production'
     )
-    process.exit(1)
+    return false
   }
-  migrateNextBatch().catch((err) => {
-    console.error(JSON.stringify(err, null, 2))
-    process.exit(1)
-  })
+
+  if (!types.includes(OLD_TYPE)) {
+    console.log(`oldType: ${OLD_TYPE} is not a valid type found on Sanity Studio`)
+    return false
+  }
+
+  if (!types.includes(NEW_TYPE)) {
+    console.log(`newType: ${NEW_TYPE} is not a valid type found on Sanity Studio`)
+    return false
+  }
+  return true
+}
+;(async () => {
+  if (await inputIsValid()) {
+    migrateNextBatch().catch((err) => {
+      console.error(JSON.stringify(err, null, 2))
+      process.exit(1)
+    })
+  }
 })()

@@ -1,44 +1,40 @@
-import {PluginOptions, defineConfig} from 'sanity'
-import {deskTool} from 'sanity/desk'
-import {RobotIcon, RocketIcon} from '@sanity/icons'
-import {visionTool} from '@sanity/vision'
-import {schemaTypes, translatedSchemaTypes} from './schemas'
-import {documentInternationalization} from '@sanity/document-internationalization'
+import { PluginOptions, defineConfig } from 'sanity';
+import { deskTool } from 'sanity/desk';
+import { visionTool } from '@sanity/vision';
+import { schemaTypes, translatedSchemaTypes } from './schemas';
+import { documentInternationalization } from '@sanity/document-internationalization';
+import { internationalizedArray } from 'sanity-plugin-internationalized-array';
+import { ENVIRONMENTS } from './utils/constants/environments';
+
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID || '';
+const languages = [
+  { id: 'en', title: 'English' },
+  { id: 'pt-BR', title: 'Português' },
+];
 
 const plugins: PluginOptions[] = [
   deskTool(),
   visionTool(),
   documentInternationalization({
-    supportedLanguages: [
-      {id: 'en', title: 'English'},
-      {id: 'pt-br', title: 'Português'},
-    ],
+    supportedLanguages: languages,
     schemaTypes: translatedSchemaTypes,
   }),
-]
-export default defineConfig([
-  {
-    name: 'production-workspace',
-    title: 'Default Leonardo Rick Workspace',
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID || '',
-    dataset: 'production',
-    basePath: '/production',
-    icon: RocketIcon,
+  internationalizedArray({
+    languages,
+    fieldTypes: ['string', 'blockContent'], // internationalizedArray<type>
+  }),
+];
+export default defineConfig(
+  ENVIRONMENTS.map(({ dataset, icon }) => ({
+    name: `${dataset}-workspace`,
+    title: `${dataset.charAt(0).toUpperCase()}${dataset.slice(1)} Leonardo Rick Workspace`,
+    projectId,
+    dataset,
+    basePath: `/${dataset}`,
+    icon: icon,
     plugins,
     schema: {
       types: schemaTypes,
     },
-  },
-  {
-    name: 'development-workspace',
-    title: 'Development Leonardo Rick Workspace',
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID || '',
-    dataset: 'development',
-    basePath: '/development',
-    icon: RobotIcon,
-    plugins,
-    schema: {
-      types: schemaTypes,
-    },
-  },
-])
+  }))
+);
