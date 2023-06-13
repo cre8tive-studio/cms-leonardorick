@@ -8,8 +8,10 @@
     "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",
-    "deploy": "sanity deploy",
+    "deploy": "sanity deploy && deploy-graphql",
+    "deploy-only-studio": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
+    "graphql-deploy": "sanity graphql deploy",
     "generate-types": "./scripts/generate-types.sh",
     "migrate-schema": "node scripts/migrate-schema-name.js"
   },

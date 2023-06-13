@@ -1,14 +1,15 @@
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
-  name: 'quote',
-  title: 'Quote',
+  name: 'recommendation',
+  title: 'Recommendation',
   type: 'document',
   fields: [
     defineField({
-      name: 'authorName',
-      title: 'Author Name',
-      type: 'string',
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: { type: 'person' },
     }),
     defineField({
       name: 'text',
@@ -18,13 +19,15 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'authorName',
+      media: 'author.image',
+      title: 'author.name',
       text: 'text',
     },
-    prepare({ title, text }) {
+    prepare({ title, text, media }) {
       return {
         title,
         subtitle: text[0].value,
+        media,
       };
     },
   },

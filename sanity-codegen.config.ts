@@ -1,4 +1,4 @@
-import {SanityCodegenConfig} from 'sanity-codegen'
+import { SanityCodegenConfig } from 'sanity-codegen';
 
 const config: SanityCodegenConfig = {
   schemaPath: './schemas/index',
@@ -32,6 +32,6 @@ const config: SanityCodegenConfig = {
       'babel-plugin-transform-vite-meta-env', // ADDED
     ],
   },
-}
+};
 
-export default config
+export default config;

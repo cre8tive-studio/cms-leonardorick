@@ -1,10 +1,11 @@
-import blockContent from './blockContent'
-import post from './post'
-import person from './person'
-import quotes from './quote'
+import blockContent from './blockContent';
+import post from './post';
+import person from './person';
+import quotes from './quote';
+import recommendation from './recommendation';
 
-export const schemaTypes = [post, person, quotes, blockContent]
+export const schemaTypes = [post, person, quotes, recommendation, blockContent];
 
-export const translatedSchemaTypes = ['post']
+export const translatedSchemaTypes = ['post'];
 // important for type generation to work properly
-export default schemaTypes
+export default schemaTypes;
